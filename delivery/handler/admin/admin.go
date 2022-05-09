@@ -69,7 +69,13 @@ func (ah *AdminHandler) LoginHandler() echo.HandlerFunc {
 
 func (ah *AdminHandler) GetAdminById() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id := middleware.ExtractToken(c)
+		id, role := middleware.ExtractToken(c)
+		if role != "admin" {
+			return c.JSON(http.StatusUnauthorized, UnAuthorizeResponse{
+				Status:   "Failed",
+				Messages: "Unauthorized",
+			})
+		}
 		admin, err := ah.adminUseCase.GetAdminById(id)
 
 		if err != nil {
@@ -88,7 +94,13 @@ func (ah *AdminHandler) GetAdminById() echo.HandlerFunc {
 func (ah *AdminHandler) UpdateAdmin() echo.HandlerFunc {
 
 	return func(c echo.Context) error {
-		id := middleware.ExtractToken(c)
+		id, role := middleware.ExtractToken(c)
+		if role != "admin" {
+			return c.JSON(http.StatusUnauthorized, UnAuthorizeResponse{
+				Status:   "Failed",
+				Messages: "Unauthorized",
+			})
+		}
 		var admin entities.Admin
 		var result UpdateAdminResponse
 		c.Bind(&admin)
@@ -111,7 +123,13 @@ func (ah *AdminHandler) UpdateAdmin() echo.HandlerFunc {
 
 func (ah *AdminHandler) DeleteAdmin() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id := middleware.ExtractToken(c)
+		id, role := middleware.ExtractToken(c)
+		if role != "admin" {
+			return c.JSON(http.StatusUnauthorized, UnAuthorizeResponse{
+				Status:   "Failed",
+				Messages: "Unauthorized",
+			})
+		}
 
 		err := ah.adminUseCase.DeleteAdmin(id)
 		if err != nil {

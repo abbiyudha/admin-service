@@ -11,6 +11,11 @@ type CreateAdminResponse struct {
 	Messages string `json:"messages"`
 }
 
+type UnAuthorizeResponse struct {
+	Status   string `json:"status"`
+	Messages string `json:"messages"`
+}
+
 type LoginAdminResponse struct {
 	Status string `json:"status"`
 	Token  string `json:"token"`
